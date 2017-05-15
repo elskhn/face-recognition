@@ -2,6 +2,8 @@
 
 size = 4
 import cv2, sys, numpy, os
+
+# change the paths below to the location where these files are on your machine
 # haar_file path
 haar_file = '/home/USER/Workspaces/Python/openCV/Facial-recognition/haarcascade_frontalface_default.xml'
 # main datasets folder path
@@ -28,10 +30,10 @@ for (subdirs, dirs, files) in os.walk(datasets):
 # OpenCV trains a model from the images using the FisherFace algorithm
 model = cv2.createFisherFaceRecognizer()
 model.train(images, labels)
-print('Classifier trained!')
 # use fisherRecognizer on webcam stream
 face_cascade = cv2.CascadeClassifier(haar_file)
 webcam = cv2.VideoCapture(0)
+print('Classifier trained!')
 print('Attempting to recognize faces...')
 while True:
     (_, im) = webcam.read()
