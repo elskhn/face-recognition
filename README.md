@@ -10,3 +10,7 @@ All you have to do is follow these steps:
 1. I recommend that you have multiple sub datasets of your face created with different lighting, face angle, etc. You can achieve this by putting spaces after your name in the `create_data.py` file.
 2. When you run `face_recognize.py`, look at your camera and sit in the position you did when you created your face's datasets.
 3. If you want to increase the chance of your face being recognized, create multiple sub datsets of your face.
+
+### Demo: 
+Here's a demo of this application in action:
+![Demo picture](demo.png)
