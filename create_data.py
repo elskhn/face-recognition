@@ -30,9 +30,9 @@ time.sleep(2)
 #Takes pictures of detected face and saves them
 count = 1
 print("Taking pictures...")
-# this takes 30 pictures of your face. Change this number if you want.
-# Having too many images, however, might slow down the program and use more of your CPU
-while count < 31:
+# this takes 100 pictures of your face. Change this number if you want.
+# Having too many images, however, might slow down the program
+while count < 101:
     # im = camera stream
     ret_val, im = webcam.read()
     # if it recieves something from the webcam...
