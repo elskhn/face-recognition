@@ -10,7 +10,7 @@ import cv2, sys, numpy, os
 # change the paths below to the location where these files are on your machine
 # haar_file path
 haar_file = '/home/USER/Workspaces/Python/openCV/Facial-recognition/haarcascade_frontalface_default.xml'
-# main datasets folder path
+# path to the main faces directory which contains all the sub_datasets
 datasets = '/home/USER/Workspaces/Python/openCV/Facial-recognition/faces'
 
 print('Training classifier...')
@@ -18,6 +18,7 @@ print('Training classifier...')
 (images, labels, names, id) = ([], [], {}, 0)
 for (subdirs, dirs, files) in os.walk(datasets):
     for subdir in dirs:
+	# the person's name is the name of the sub_dataset created using the create_data.py file
         names[id] = subdir
         subjectpath = os.path.join(datasets, subdir)
         for filename in os.listdir(subjectpath):
@@ -33,6 +34,7 @@ for (subdirs, dirs, files) in os.walk(datasets):
 
 # OpenCV trains a model from the images using the FisherFace algorithm
 model = cv2.createFisherFaceRecognizer()
+# train the FisherFaces algorithm on the images and labels we provided above
 model.train(images, labels)
 # use fisherRecognizer on webcam stream
 face_cascade = cv2.CascadeClassifier(haar_file)
@@ -42,14 +44,16 @@ print('Attempting to recognize faces...')
 while True:
     (_, im) = webcam.read()
     gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-    # detect faces using haar_cacade and draw a rectangle around them
+    # detect faces using the haar_cacade file
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
     for (x,y,w,h) in faces:
         # colour = bgr format
+	# draw a rectangle around the face and resizing/ grayscaling it
+	# uses the same method as in the create_data.py file
         cv2.rectangle(im,(x,y),(x + w,y + h),(0, 255, 255),2)
         face = gray[y:y + h, x:x + w]
         face_resize = cv2.resize(face, (width, height))
-        # try to recognize the face(s)
+        # try to recognize the face(s) using the resized faces we made above
         prediction = model.predict(face_resize)
         cv2.rectangle(im, (x, y), (x + w, y + h), (0, 255, 255), 2)
         # if face is recognized, display the corresponding name
