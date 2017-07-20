@@ -1,4 +1,8 @@
+# OpenCV Facial Recognition
+# Written + Documented by Abdullah Khan
+
 # face_recognize.py
+# script used to: train a model on people's faces and recognize the faces using the client-side webcam stream
 
 size = 4
 import cv2, sys, numpy, os

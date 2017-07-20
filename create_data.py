@@ -1,3 +1,6 @@
+# OpenCV Facial Recognition
+# Written + Documented by Abdullah Khan
+
 # create_data.py
 # script used to create a dataset of someone's face
 
