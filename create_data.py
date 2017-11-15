@@ -7,9 +7,9 @@
 # import openCV, numpy, and system-related modules
 import cv2, numpy, sys, os, time
 # change the paths below to the location where these files are on your machine
-haar_file = '/home/USER/Workspaces/Python/openCV/Facial-recognition/haarcascade_frontalface_default.xml'
+haar_file = '/path/to/project/directory/haarcascade_frontalface_default.xml'
 # All of the faces data (images) will be stored here
-datasets = '/home/USER/Workspaces/Python/openCV/Facial-recognition/faces'
+datasets = '/path/to/project/directory/faces'
 # Sub dataset in 'faces' folder. Each folder is specific to an individual person
 # change the name below when creating a new dataset for a new person
 sub_dataset = 'Abdullah'
