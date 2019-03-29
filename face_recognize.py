@@ -33,7 +33,7 @@ for (subdirs, dirs, files) in os.walk(datasets):
 (images, labels) = [numpy.array(lists) for lists in [images, labels]]
 
 # OpenCV trains a model from the images using the FisherFace algorithm
-model = cv2.createFisherFaceRecognizer()
+model = cv2.face.LBPHFaceRecognizer_create()
 # train the FisherFaces algorithm on the images and labels we provided above
 model.train(images, labels)
 # use fisherRecognizer on webcam stream
@@ -57,11 +57,15 @@ while True:
         prediction = model.predict(face_resize)
         cv2.rectangle(im, (x, y), (x + w, y + h), (0, 255, 255), 2)
         # if face is recognized, display the corresponding name
-        if prediction[1]<500:
-	       cv2.putText(im,'%s' % (names[prediction[0]]),(x + 10, (y + 22) + h), cv2.FONT_HERSHEY_PLAIN,1.5,(20,205,20), 2)
+        if prediction[1] < 74:
+            cv2.putText(im,'%s' % (names[prediction[0]].strip()),(x + 10, (y + 22) + h), cv2.FONT_HERSHEY_PLAIN,1.5,(20,205,20), 2)
+            # print the confidence level with the person's name to standard output
+            confidence = (prediction[1]) if prediction[1] <= 100.0 else 100.0
+            print("predicted person: {}, confidence: {}%".format(names[prediction[0]].strip(), round((confidence / 74.5) * 100, 2)))
         # if face is unknown (if classifier is not trained on this face), show 'Unknown' text...
-    	else:
-    	  cv2.putText(im,'Unknown',(x + 10, (y + 22) + h), cv2.FONT_HERSHEY_PLAIN,1.5,(65,65, 255), 2)
+        else:
+            cv2.putText(im,'Unknown',(x + 10, (y + 22) + h), cv2.FONT_HERSHEY_PLAIN,1.5,(65,65, 255), 2)
+            print("predicted person: Unknown")
 
     # show window and set the window title
     cv2.imshow('OpenCV Face Recognition -  esc to close', im)
