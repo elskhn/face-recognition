@@ -11,3 +11,11 @@ All you have to do is follow these steps:
 2. When you run `face_recognize.py`, look at your camera and sit in the position you did when you created your face's dataset(s).
 3. If you want to increase the chance of your face being recognized, create multiple sub datsets of your face.
 4. You can also increase the number of pictures per sub dataset by changing the number in the while loop in the `create_data.py` file. This may also increase the chance of your face being recognized.
+
+### Tested using:
+```
+- Python 3.5.2
+- OpenCV 3.4.3.18
+- NumPy 1.15.1
+- elementary OS 0.4.1 Loki (Ubuntu 16.04.5 - Linux 4.15.0-46-generic)
+```
