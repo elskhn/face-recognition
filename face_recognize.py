@@ -29,14 +29,39 @@ for (subdirs, dirs, files) in os.walk(datasets):
         id += 1
 (width, height) = (130, 100)
 
+# https://www.life2coding.com/drawing-fancy-round-rectangle-using-opencv-python/
+def rounded_rectangle(img, pt1, pt2, color, thickness, r, d):
+    x1,y1 = pt1
+    x2,y2 = pt2
+ 
+    # Top left
+    cv2.line(img, (x1 + r, y1), (x1 + r + d, y1), color, thickness)
+    cv2.line(img, (x1, y1 + r), (x1, y1 + r + d), color, thickness)
+    cv2.ellipse(img, (x1 + r, y1 + r), (r, r), 180, 0, 90, color, thickness)
+ 
+    # Top right
+    cv2.line(img, (x2 - r, y1), (x2 - r - d, y1), color, thickness)
+    cv2.line(img, (x2, y1 + r), (x2, y1 + r + d), color, thickness)
+    cv2.ellipse(img, (x2 - r, y1 + r), (r, r), 270, 0, 90, color, thickness)
+ 
+    # Bottom left
+    cv2.line(img, (x1 + r, y2), (x1 + r + d, y2), color, thickness)
+    cv2.line(img, (x1, y2 - r), (x1, y2 - r - d), color, thickness)
+    cv2.ellipse(img, (x1 + r, y2 - r), (r, r), 90, 0, 90, color, thickness)
+ 
+    # Bottom right
+    cv2.line(img, (x2 - r, y2), (x2 - r - d, y2), color, thickness)
+    cv2.line(img, (x2, y2 - r), (x2, y2 - r - d), color, thickness)
+    cv2.ellipse(img, (x2 - r, y2 - r), (r, r), 0, 0, 90, color, thickness)
+
 # Create a numpy array from the lists above
 (images, labels) = [numpy.array(lists) for lists in [images, labels]]
 
-# OpenCV trains a model from the images using the FisherFace algorithm
+# OpenCV trains a model from the images using the Local Binary Patterns algorithm
 model = cv2.face.LBPHFaceRecognizer_create()
-# train the FisherFaces algorithm on the images and labels we provided above
+# train the LBP algorithm on the images and labels we provided above
 model.train(images, labels)
-# use fisherRecognizer on webcam stream
+
 face_cascade = cv2.CascadeClassifier(haar_file)
 webcam = cv2.VideoCapture(0)
 print('Classifier trained!')
@@ -50,21 +75,21 @@ while True:
         # colour = bgr format
 	# draw a rectangle around the face and resizing/ grayscaling it
 	# uses the same method as in the create_data.py file
-        cv2.rectangle(im,(x,y),(x + w,y + h),(0, 255, 255),2)
+        # cv2.rectangle(im,(x,y),(x + w,y + h),(0, 255, 255),2)
         face = gray[y:y + h, x:x + w]
         face_resize = cv2.resize(face, (width, height))
         # try to recognize the face(s) using the resized faces we made above
         prediction = model.predict(face_resize)
-        cv2.rectangle(im, (x, y), (x + w, y + h), (0, 255, 255), 2)
+        rounded_rectangle(im, (x, y), (x + w, y + h), (0, 255, 255), 2, 15, 30)
         # if face is recognized, display the corresponding name
         if prediction[1] < 74:
-            cv2.putText(im,'%s' % (names[prediction[0]].strip()),(x + 10, (y + 22) + h), cv2.FONT_HERSHEY_PLAIN,1.5,(20,205,20), 2)
+            cv2.putText(im,'%s' % (names[prediction[0]].strip()),(x + 5, (y + 25) + h), cv2.FONT_HERSHEY_PLAIN,1.5,(20,185,20), 2)
             # print the confidence level with the person's name to standard output
             confidence = (prediction[1]) if prediction[1] <= 100.0 else 100.0
             print("predicted person: {}, confidence: {}%".format(names[prediction[0]].strip(), round((confidence / 74.5) * 100, 2)))
         # if face is unknown (if classifier is not trained on this face), show 'Unknown' text...
         else:
-            cv2.putText(im,'Unknown',(x + 10, (y + 22) + h), cv2.FONT_HERSHEY_PLAIN,1.5,(65,65, 255), 2)
+            cv2.putText(im,'Unknown',(x + 5, (y + 25) + h), cv2.FONT_HERSHEY_PLAIN,1.5,(65,65, 255), 2)
             print("predicted person: Unknown")
 
     # show window and set the window title
